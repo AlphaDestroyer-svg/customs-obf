@@ -1,0 +1,414 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap');
+
+:root {
+  --gs2-bg: #07090d;
+  --gs2-bg-2: #0b1220;
+  --gs2-card: rgba(255, 255, 255, 0.06);
+  --gs2-card-2: rgba(255, 255, 255, 0.03);
+  --gs2-border: rgba(255, 255, 255, 0.10);
+  --gs2-border-2: rgba(249, 115, 22, 0.25);
+  --gs2-text: rgba(255, 255, 255, 0.92);
+  --gs2-muted: rgba(255, 255, 255, 0.62);
+  --gs2-accent: #f97316;
+  --gs2-accent-2: #fb923c;
+  --gs2-good: #34d399;
+  --gs2-bad: #fb7185;
+  --gs2-shadow: 0 20px 60px rgba(0,0,0,.55);
+  --gs2-radius: 14px;
+  --gs2-radius-sm: 12px;
+  --gs2-glow: 0 0 0 1px rgba(249,115,22,.25), 0 20px 60px rgba(0,0,0,.55);
+  --gs2-glow-strong: 0 0 0 1px rgba(249,115,22,.35), 0 30px 90px rgba(0,0,0,.65);
+
+  --gs2-noise-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.32'/%3E%3C/svg%3E");
+}
+
+html { scrollbar-gutter: stable; }
+@supports not (scrollbar-gutter: stable) { html { overflow-y: scroll; } }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: radial-gradient(1200px 900px at 22% -10%, rgba(249, 115, 22, 0.18), transparent 55%),
+              radial-gradient(900px 700px at 92% 10%, rgba(56, 189, 248, 0.14), transparent 60%),
+              linear-gradient(180deg, var(--gs2-bg) 0%, var(--gs2-bg-2) 70%, #05060a 100%);
+  color: var(--gs2-text);
+  font-family: Rajdhani, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* Base typography tuning */
+h1, h2, h3, h4, h5, h6 {
+  font-family: Rajdhani, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  letter-spacing: .02em;
+}
+
+/* Make sure no theme layer kills clicks */
+* { -webkit-tap-highlight-color: transparent; }
+[class*="ProductCard-module__"],
+[class*="CatalogCard-module__"],
+[class*="Card-module__"],
+[class*="ProductCard-module__"] * {
+  pointer-events: auto;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+body > :not(.footerComponent) { flex: 1 0 auto; }
+
+/* Noise + subtle scanlines overlay (generated, no external images) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    var(--gs2-noise-svg),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0px, rgba(255,255,255,.018) 1px, transparent 2px, transparent 5px);
+  opacity: .55;
+  mix-blend-mode: overlay;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(900px 420px at 50% 0%, rgba(249,115,22,.18), transparent 65%);
+  opacity: .65;
+}
+
+/* Ensure app content sits above overlays */
+#root, .App, .Page, [class*="Page-module__"], [class*="Layout-module__"], [class*="App-module__"], [class*="Container-module__"] {
+  position: relative;
+  z-index: 1;
+}
+
+/* Links inside descriptions */
+.gs-desc-link {
+  color: #93c5fd;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.gs-desc-link:hover { color: #60a5fa; }
+
+/* Header / top area */
+.Page-module__header, [class*="Page-module__header"], [class*="Header-module__wrapper"], [class*="Header-module__header"] {
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Container spacing + section rhythm */
+[class*="Container-module__container"],
+[class*="Page-module__container"],
+[class*="Layout-module__container"] {
+  padding-left: max(16px, env(safe-area-inset-left)) !important;
+  padding-right: max(16px, env(safe-area-inset-right)) !important;
+}
+
+[class*="Catalog-module__list"],
+[class*="Catalog-module__grid"],
+[class*="Products-module__list"],
+[class*="Products-module__grid"],
+[class*="Shop-module__grid"],
+[class*="Shop-module__list"] {
+  gap: 14px !important;
+}
+
+/* Buttons */
+button,
+[class*="Button-module__button"],
+a[class*="Button-module__button"],
+[class*="PayButton-module__"],
+[class*="CartButton-module__"] {
+  border-radius: 12px !important;
+  border: 1px solid rgba(249,115,22,.35) !important;
+  background: linear-gradient(135deg, rgba(249,115,22,.95), rgba(251,146,60,.92)) !important;
+  color: #0b0f16 !important;
+  box-shadow: 0 12px 30px rgba(249,115,22,.18);
+  transition: transform .12s ease, filter .18s ease, box-shadow .18s ease;
+  font-family: Roboto Condensed, Rajdhani, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  letter-spacing: .02em;
+}
+
+button:hover,
+[class*="Button-module__button"]:hover,
+a[class*="Button-module__button"]:hover {
+  transform: translateY(-1px);
+  filter: saturate(1.08);
+  box-shadow: 0 18px 44px rgba(249,115,22,.22);
+}
+
+button:active,
+[class*="Button-module__button"]:active {
+  transform: translateY(0px) scale(.99);
+}
+
+/* Secondary buttons (when GS uses outlines) */
+[class*="Button-module__button"][class*="secondary"],
+[class*="Button-module__button"][class*="outline"],
+[class*="Button-module__button"][class*="ghost"] {
+  background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03)) !important;
+  color: var(--gs2-text) !important;
+  border: 1px solid rgba(255,255,255,.14) !important;
+  box-shadow: none;
+}
+
+/* Cards / tiles (catalog, product blocks, widgets) */
+[class*="ProductCard-module__"],
+[class*="CatalogCard-module__"],
+[class*="Card-module__"],
+.product_desc_item,
+.Cookie-module__wrapper,
+[class*="Cookie-module__wrapper"],
+[class*="ModalLayout-module__modal"],
+[class*="ProductModal-module__modal"] {
+  background: linear-gradient(180deg, var(--gs2-card), var(--gs2-card-2)) !important;
+  border: 1px solid var(--gs2-border) !important;
+  border-radius: var(--gs2-radius) !important;
+  box-shadow: var(--gs2-glow);
+}
+
+/* “Metal plate” accent strip + rivets effect */
+[class*="ProductCard-module__"],
+.product_desc_item {
+  position: relative;
+  overflow: hidden;
+}
+
+[class*="ProductCard-module__"]::before,
+.product_desc_item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(249,115,22,.0) 0%, rgba(249,115,22,.18) 14%, rgba(249,115,22,.0) 34%),
+    radial-gradient(10px 10px at 16px 16px, rgba(255,255,255,.24) 0%, rgba(255,255,255,0) 70%),
+    radial-gradient(10px 10px at calc(100% - 16px) 16px, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 70%),
+    radial-gradient(10px 10px at 16px calc(100% - 16px), rgba(255,255,255,.20) 0%, rgba(255,255,255,0) 70%),
+    radial-gradient(10px 10px at calc(100% - 16px) calc(100% - 16px), rgba(255,255,255,.18) 0%, rgba(255,255,255,0) 70%);
+  opacity: .9;
+}
+
+[class*="ProductCard-module__"]:hover,
+.product_desc_item:hover {
+  border-color: rgba(249,115,22,.45) !important;
+  box-shadow: var(--gs2-glow-strong);
+}
+
+/* Product card: make it feel clickable */
+[class*="ProductCard-module__"],
+[class*="CatalogCard-module__"] {
+  cursor: pointer;
+  transform: translateZ(0);
+  transition: transform .16s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+[class*="ProductCard-module__"]:active,
+[class*="CatalogCard-module__"]:active {
+  transform: translateY(1px) scale(.995);
+}
+
+/* Card image treatment */
+[class*="ProductCard-module__img"],
+[class*="ProductCard-module__image"],
+[class*="CatalogCard-module__img"],
+[class*="CatalogCard-module__image"] {
+  border-radius: calc(var(--gs2-radius) - 4px) !important;
+  overflow: hidden;
+  background: radial-gradient(120px 80px at 30% 20%, rgba(249,115,22,.18), transparent 60%),
+              rgba(255,255,255,.04);
+}
+
+[class*="ProductCard-module__img"] img,
+[class*="ProductCard-module__image"] img,
+[class*="CatalogCard-module__img"] img,
+[class*="CatalogCard-module__image"] img {
+  transform: scale(1.01);
+  transition: transform .22s ease, filter .22s ease;
+  filter: contrast(1.06) saturate(1.05);
+}
+
+[class*="ProductCard-module__"]:hover img,
+[class*="CatalogCard-module__"]:hover img {
+  transform: scale(1.05);
+  filter: contrast(1.08) saturate(1.10);
+}
+
+/* Titles / labels */
+[class*="ProductCard-module__title"],
+[class*="CatalogCard-module__title"],
+[class*="Product-module__title"],
+[class*="ProductModal-module__title"] {
+  font-family: Rajdhani, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
+/* Discount badge / pills */
+[class*="Discount"],
+[class*="Badge"],
+[class*="Tag"],
+[class*="Label"] {
+  border-radius: 999px !important;
+}
+
+/* Tabs / categories */
+[class*="Tabs-module__"],
+[class*="Categories-module__"],
+[class*="ShopTabs-module__"] {
+  gap: 8px !important;
+}
+
+[class*="Tabs-module__tab"],
+[class*="Categories-module__item"],
+[class*="ShopTabs-module__tab"] {
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.06) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  color: var(--gs2-text) !important;
+}
+
+[class*="Tabs-module__tab"][class*="active"],
+[class*="Categories-module__item"][class*="active"],
+[class*="ShopTabs-module__tab"][class*="active"] {
+  border-color: rgba(249,115,22,.55) !important;
+  background: rgba(249,115,22,.12) !important;
+}
+
+/* Modal polish */
+[class*="ModalLayout-module__overlay"],
+[class*="ModalLayout-module__backdrop"],
+[class*="ProductModal-module__overlay"] {
+  background: rgba(0,0,0,.72) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+[class*="ModalLayout-module__modal"],
+[class*="ProductModal-module__modal"] {
+  border-radius: calc(var(--gs2-radius) + 2px) !important;
+}
+
+/* Prices */
+[class*="Price-module__"],
+[class*="ProductPrice-module__"],
+[class*="Cart-module__price"],
+[class*="Product-module__price"],
+.price {
+  color: #a7f3d0 !important;
+  text-shadow: 0 0 18px rgba(52,211,153,.10);
+  font-weight: 700;
+}
+
+/* Inputs */
+input, textarea, select,
+[class*="Input-module__input"],
+[class*="Textarea-module__textarea"],
+[class*="Select-module__select"] {
+  background: rgba(255,255,255,.06) !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  color: var(--gs2-text) !important;
+  border-radius: 12px !important;
+  outline: none !important;
+}
+
+input:focus, textarea:focus, select:focus,
+[class*="Input-module__input"]:focus {
+  border-color: rgba(249,115,22,.55) !important;
+  box-shadow: 0 0 0 4px rgba(249,115,22,.12);
+}
+
+/* Loader */
+.gs-loader,
+.Loader-module__loader,
+.Page-module__loader,
+[class*="Loader-module__"],
+[class*="Page-module__loader"] {
+  background: transparent !important;
+}
+
+/* Custom lang toggle (our injected UI) */
+.gs-lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  box-shadow: 0 18px 40px rgba(0,0,0,.35);
+}
+
+.gs-lang-toggle__current {
+  border: 0;
+  background: transparent;
+  color: var(--gs2-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.gs-lang-toggle__current:hover {
+  background: rgba(249,115,22,.10);
+}
+
+.gs-lang-toggle__menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 180px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(10, 14, 22, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 28px 80px rgba(0,0,0,.65);
+  display: none;
+  z-index: 99999;
+}
+
+.gs-lang-toggle[data-open="1"] .gs-lang-toggle__menu { display: block; }
+
+.gs-lang-toggle__opt {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--gs2-text);
+  cursor: pointer;
+  font-family: Roboto Condensed, Rajdhani, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.gs-lang-toggle__opt:hover { background: rgba(249,115,22,.12); }
+
+/* Hide native GS language switch buttons (we inject our own) */
+[class*="LangSwitcher-module__btn"] { display: none !important; }
+
+/* Footer tweaks (if your JS injects .footerComponent) */
+.footerComponent {
+  border-top: 1px solid rgba(255,255,255,.10);
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Small screens */
+@media (max-width: 520px) {
+  :root { --gs2-radius: 12px; }
+  button, [class*="Button-module__button"] { border-radius: 12px !important; }
+}
